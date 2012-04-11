@@ -25,8 +25,8 @@ int main(int argc, char* argv[])
 
     // sorting it
     vector<string> keys;
-    for (map<string, int>::const_iterator i = counts.begin(); i != counts.end(); ++i) {
-        keys.push_back(i->first);
+    for (auto& i : counts) {
+        keys.push_back(i.first);
     }
 
     sort(keys.begin(),
