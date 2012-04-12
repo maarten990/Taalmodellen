@@ -12,16 +12,20 @@ vector<string> parse_sentences(char file_path[], int n)
         // getting each line into a file of words
         getline(file, line);
         words = split_line(line);
-
     }
 }
 
 vector<string> split_line(string line)
 {
+    // will be returned
+    vector<string> words;
+    
     boost::regex re("\\s+");
     boost::sregex_token_iterator i(line.begin(), line.end(), re, -1);
     boost::sregex_token_iterator j;
     while (i != j) {
         words.push_back(*i++);
     }
+    
+    return words;
 }
