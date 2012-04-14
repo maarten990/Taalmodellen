@@ -78,6 +78,7 @@ void calculate_probability(vector<string> nmaps, int n,
                            map<string, int> n_frq, map <string, int> n1_freq ){
     double w;
     double w2;
+    double w3;
     vector<string> temp;
     string n1;
     for (int i = 0; i < nmaps.size(); i++){
@@ -87,8 +88,12 @@ void calculate_probability(vector<string> nmaps, int n,
         temp.pop_back();
         n1 = nmap_to_string(temp);
         w2 = n1_freq[n1];
-        w = w/w2;
-        cout<< w << endl;
+        w3 = w/w2;
+        cout<< w3 << endl;
+        cout<< "w :" << w <<endl;
+        cout<< "w2 :" << w2 <<endl;
+        cout << "sentence one: " << nmaps[i] << endl;
+        cout << "sentence two: " << n1 <<endl;
         n1 = "";
         w = 0;
         w2 = 0;
