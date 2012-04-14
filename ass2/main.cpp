@@ -1,4 +1,5 @@
 #include "ngram_requency.h"
+#include "probabilities.h"
 #include <iostream>
 #include <cstdlib>
 #include <map>
@@ -21,4 +22,9 @@ int main(int argc, char *argv[])
     // first we get the frequency maps of n-grams and (n-1)-grams
     map<string, int> n_freqs = ngram_frequencies(corpus_path, n);
     map<string, int> n1_freqs = ngram_frequencies(corpus_path, n-1);
+
+    vector<string> nmaps = parse_sentences(ngrams_path, n);
+
+    calculate_probability(nmaps, n, n_freqs, n1_freqs);
+    return 0;
 }
