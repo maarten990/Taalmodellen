@@ -23,8 +23,11 @@ int main(int argc, char *argv[])
     map<string, int> n_freqs = ngram_frequencies(corpus_path, n);
     map<string, int> n1_freqs = ngram_frequencies(corpus_path, n-1);
 
-    vector<string> nmaps = parse_sentences(ngrams_path, n);
+    // question 2
+    //vector<string> nmaps = parse_sentences(ngrams_path, n);
+    //calculate_probability(nmaps, n, n_freqs, n1_freqs);
 
-    calculate_probability(nmaps, n, n_freqs, n1_freqs);
+    // question 3
+    vector<string> sentences = parse_sentences_q3(sentences_path, n, n_freqs, n1_freqs);
     return 0;
 }

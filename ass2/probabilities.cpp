@@ -53,8 +53,7 @@ vector<string> split_line(string line)
 
 // finds the last nmap of the sentence (without <\s>)
 void get_last_nmap(vector<string> &sentence, int n)
-{
-    sentence.pop_back();
+{ sentence.pop_back();
     // now remove all beginning elements until we keep last ngram
     while(sentence.size() != n)
     {
@@ -69,8 +68,8 @@ void add_symbols_sentence(vector<string> &sentence, int n)
     {
         sentence.insert(sentence.begin(), "<s>");
     }
-    sentence.push_back("<\\s>");
 
+    sentence.push_back("<\\s>");
 }
 
 
@@ -99,6 +98,51 @@ void calculate_probability(vector<string> nmaps, int n,
         w2 = 0;
 
    }
+}
 
+/*
+ * question 3
+ */
+vector<string> parse_sentences_q3(char *sentences_path, int n,
+                                  const map<string, int> &nfreqs,
+                                  const map<string, int> &n1freqs)
+{
+    ifstream file(sentences_path);
+    string line;
+    vector<string> words;
+    // counter for all_last_nmaps
+    while (file.good()) {
+        // getting each line into a vector of words
+        getline(file, line);
+        words = split_line(line);
+        sentence_probability(words, n, nfreqs, n1freqs);
 
+        // calculating the probability of the sentence
+
+    }
+}
+
+/*
+ * calculates the probability of a sentence occurring
+ */
+double sentence_probability(const vector<string> &words, int n,
+                            const map<string, int> &nfreqs,
+                            const map<string, int> &n1freqs)
+{
+    vector<string> substring;
+    double probability = 1;
+    int m = words.size();
+    // outer "product" loop
+    for (int i = 1; i <= m; ++i) {
+        // inner loop for getting a substring of the sentence
+        for (int j = (i - n + 1); j < i - 1; ++j) {
+            substring.push_back( (j <= 0) ? "<s>" : words[j]);
+        }
+
+        cout << nmap_to_string(substring) << endl;
+
+        probability *= 1;
+    }
+
+    return probability;
 }
