@@ -24,10 +24,13 @@ int main(int argc, char *argv[])
     map<string, int> n1_freqs = ngram_frequencies(corpus_path, n-1);
 
     // question 2
-    //vector<string> nmaps = parse_sentences(ngrams_path, n);
-    //calculate_probability(nmaps, n, n_freqs, n1_freqs);
+    cout << "ngram probabilities:" << endl;
+    vector<string> nmaps = parse_sentences(ngrams_path, n);
+    calculate_probability(nmaps, n, n_freqs, n1_freqs);
+    cout << endl;
 
     // question 3
+    cout << "sentence probabilities:" << endl;
     map<string, double> sentence_probs = parse_sentences_q3(sentences_path, n, n_freqs, n1_freqs);
 
     // printing the sentence probabilities
