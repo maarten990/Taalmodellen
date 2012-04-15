@@ -28,6 +28,13 @@ int main(int argc, char *argv[])
     //calculate_probability(nmaps, n, n_freqs, n1_freqs);
 
     // question 3
-    vector<string> sentences = parse_sentences_q3(sentences_path, n, n_freqs, n1_freqs);
+    map<string, double> sentence_probs = parse_sentences_q3(sentences_path, n, n_freqs, n1_freqs);
+
+    // printing the sentence probabilities
+    for (auto& pair : sentence_probs) {
+        cout << "Sentence: " << pair.first << endl;
+        cout << "Probability: " << pair.second << endl << endl;
+    }
+
     return 0;
 }
