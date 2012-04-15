@@ -137,14 +137,16 @@ double sentence_probability(const vector<string> &words, int n,
     // outer "product" loop
     for (int i = 1; i <= m; ++i) {
         // inner loop for getting a substring of the sentence
-        for (int j = (i - (n + 1)); j < i - 1; ++j) {
+        for (int j = i - n; j <= i - 1; ++j) {
             substring.push_back( (j <= 0) ? "<s>" : words[j]);
         }
 
         cout << nmap_to_string(substring) << endl;
+        substring.clear(); // clearing the vector
 
         probability *= 1;
     }
+    cout << endl;
 
     return probability;
 }
