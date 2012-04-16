@@ -134,7 +134,7 @@ double sentence_probability(const vector<string> &words, int n,
     double probability = 1;
     int m = words.size();
     // outer "product" loop, looping through each n-gram in the sentence
-    for (int i = 2; i <= m; ++i) {
+    for (int i = 1; i <= m; ++i) {
         // inner loop for getting a substring of the sentence
         for (int j = i - n; j < i; ++j) {
             if (j < 0)
