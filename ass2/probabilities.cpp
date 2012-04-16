@@ -81,7 +81,7 @@ void calculate_probability(vector<string> nmaps, int n,
     vector<string> temp;
     string n1;
     for (int i = 0; i < nmaps.size(); i++){
-        cout<< " Probability of sentence " << nmaps[i] << ": ";
+        cout<< " Probability of ngram " << nmaps[i] << ": ";
         w = n_frq[nmaps[i]];
         temp = split_line(nmaps[i]);
         temp.pop_back();
@@ -89,10 +89,6 @@ void calculate_probability(vector<string> nmaps, int n,
         w2 = n1_freq[n1];
         w3 = w/w2;
         cout<< w3 << endl;
-        cout<< "w :" << w <<endl;
-        cout<< "w2 :" << w2 <<endl;
-        cout << "sentence one: " << nmaps[i] << endl;
-        cout << "sentence two: " << n1 <<endl;
         n1 = "";
         w = 0;
         w2 = 0;
