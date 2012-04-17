@@ -80,3 +80,19 @@ void add_symbols(vector<string> &lines, int n)
         lines[i] = prefix + lines[i] + "<\\s> ";
     }
 }
+
+// sorting it
+void map_sort(map<string, int> &counts){
+
+ vector<string> keys;
+ for (auto& i : counts) {
+     keys.push_back(i.first);
+ }
+
+ sort(keys.begin(),
+      keys.end(),
+      [&counts](const string &a, const string &b) // lambda function!
+      {
+          return (counts[a] > counts[b]);
+      });
+}

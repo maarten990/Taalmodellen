@@ -1,5 +1,6 @@
 #include "ngram_requency.h"
 #include "probabilities.h"
+#include "smoothing.h"
 #include <iostream>
 #include <cstdlib>
 #include <map>
@@ -20,8 +21,11 @@ int main(int argc, char *argv[])
     char *sentences_path = argv[4];
 
     // first we get the frequency maps of n-grams and (n-1)-grams
+    map<string, int> unaries = ngram_frquencies(corpus_path, 1);
     map<string, int> n_freqs = ngram_frequencies(corpus_path, n);
     map<string, int> n1_freqs = ngram_frequencies(corpus_path, n-1);
+
+    map_sort(n_freqs);
 
     // question 2
     cout << "ngram probabilities:" << endl;

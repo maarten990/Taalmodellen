@@ -15,5 +15,6 @@ using namespace std;
 map<string, int> ngram_frequencies(char file_location[], int n);
 vector<string> get_lines(char file_location[]);
 void add_symbols(vector<string> &lines, int n);
+void map_sort(map<string, int> &counts);
 
 #endif // NGRAM_REQUENCY_H
