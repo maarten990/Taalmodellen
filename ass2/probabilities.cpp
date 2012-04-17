@@ -16,10 +16,6 @@ vector<string> parse_sentences(char file_path[], int n)
         if(words.size() != n){
             continue;
         }
-        // at begin and end sentences
-        //add_symbols_sentence(words,n);
-        // retrieve last nmap from sentence
-        //get_last_nmap(words, n);
         // store nmap as sentence in vector array
         all_last_nmaps.push_back(nmap_to_string(words));
     }
@@ -73,6 +69,7 @@ void add_symbols_sentence(vector<string> &sentence, int n)
 }
 
 
+// calculates probability
 void calculate_probability(vector<string> nmaps, int n,
                            map<string, int> &n_frq, map<string, int> &n1_freq ){
     double w;
@@ -80,13 +77,18 @@ void calculate_probability(vector<string> nmaps, int n,
     double w3;
     vector<string> temp;
     string n1;
+    // for all senteces calculate probability
     for (int i = 0; i < nmaps.size(); i++){
         cout<< " Probability of ngram " << nmaps[i] << ": ";
+        //use sentence as key to extract value
         w = n_frq[nmaps[i]];
         temp = split_line(nmaps[i]);
+        // remove last element for n-1 gram lookup
         temp.pop_back();
         n1 = nmap_to_string(temp);
+        // do the lookup
         w2 = n1_freq[n1];
+        //the calculation of probability
         w3 = w/w2;
         cout<< w3 << endl;
         n1 = "";
