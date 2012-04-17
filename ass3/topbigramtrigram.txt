@@ -1,0 +1,23 @@
+bigrams:
+<s> nee =2204
+<s> ja =1653
+ik wil =1487
+ja <\s> =1225
+<s> ik =1224
+<s> van =1134
+nee <\s> =1074
+uur <\s> =735
+dank u =514
+nee dank =399
+
+trigrams
+<s> <s> nee =2204
+<s> <s> ja =1653
+<s> <s> ik =1224
+<s> ja <\s> =1194
+<s> ik wil =1153
+<s> <s> van =1134
+<s> nee <\s> =1064
+<s> nee dank =397
+<s> <s> om =395
+nee dank u =393
