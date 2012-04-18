@@ -23,5 +23,12 @@ double smoothed_probability(vector<string> ngram,
 double smoothed_sentence_probability(const vector<string> &words, int n,
                                      map<string, int> &nfreqs,
                                      const map<string, int> &unaries);
+double get_c_star(vector<string> ngram,
+                  const map<string, int> &ngram_freqs,
+                  map<int, int> &freq_freqs);
+
+void print_all_sentence_probs(char *file_path, int n, 
+                              map<string, int> &nfreqs,
+                              map<string, int> &unaries);
 
 #endif // PROBABILITIES_H

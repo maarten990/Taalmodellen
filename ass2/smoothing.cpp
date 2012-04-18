@@ -77,6 +77,44 @@ double smoothed_probability(vector<string> ngram,
                             const map<string, int> &ngram_freqs,
                             map<int, int> &freq_freqs)
 {
+    
+    // first we got the top part of the division
+    double c_star = get_c_star(ngram, ngram_freqs, freq_freqs);
+    // now we calculate the summation on the bottom of the division
+    // slow, naive method
+    double sum = 0;
+    vector<string> tokens, wn1;
+    string tokens_head;
+    for (auto& key_val : ngram_freqs) {
+        // tokens will contain the key of the map in vector-of-words form
+        tokens = split_line(key_val.first);
+        
+        // copying the first n-1 elements of the ngram to the vector wn1
+        for (auto i = ngram.begin(); i != ngram.end()-1; ++i) {
+            wn1.push_back(*i);
+        }
+        
+        // popping the tokens temporarily to equality check the first n-1 elements
+        tokens_head = tokens.back();
+        tokens.pop_back();
+        
+        if (wn1 == tokens) {
+            tokens.push_back(tokens_head);
+            sum += get_c_star(tokens, ngram_freqs, freq_freqs);
+        }
+        
+        // clearing stuff for the next iteration
+        wn1.clear();
+        tokens.clear();
+    }
+
+    return c_star / sum;
+}
+
+double get_c_star(vector<string> ngram,
+                  const map<string, int> &ngram_freqs,
+                  map<int, int> &freq_freqs)
+{
     // first we get the ngram's count
     auto c_it = ngram_freqs.find(nmap_to_string(ngram));
     assert( c_it != ngram_freqs.end() );
@@ -91,15 +129,8 @@ double smoothed_probability(vector<string> ngram,
     ensure_nonzero(&nc1, freq_freqs);
 
     // using the Good-Turing formula to calculate a new count
-    double new_c = (c + 1) * (nc1 / nc);
-
-    // getting the value of N
-    int N;
-    for (auto &pair : freq_freqs) {
-        N += pair.first * pair.second;
-    }
-
-    return new_c / ngram_freqs.size();
+    double c_star = (c + 1) * (nc1 / nc);
+    return c_star;
 }
 
 /*
@@ -109,7 +140,8 @@ void ensure_nonzero(double *c, const map<int, int> &ncs)
 {
     if (*c == 0) {
         // *c = interpolated_value(*c, ncs);
-        cout << "Warning: count of zero" << endl;
+        //cout << "Warning: count of zero" << endl;
+        *c = 1;
     }
 }
 
@@ -132,6 +164,7 @@ double smoothed_sentence_probability(const vector<string> &words, int n,
         for (int j = i - n; j < i; ++j) {
             if (j < 0)
                 substring.push_back("<s>");
+
             else
                 substring.push_back(words[j]);
         }
@@ -142,4 +175,23 @@ double smoothed_sentence_probability(const vector<string> &words, int n,
     }
 
     return probability;
+}
+
+void print_all_sentence_probs(char *file_path, int n, 
+                              map<string, int> &nfreqs,
+                              map<string, int> &unaries)
+{
+    ifstream file(file_path);
+    
+    double prob;
+    string line;
+    vector<string> words;
+    while (file.good()) {
+        getline(file, line);
+        words = split_line(line);
+        
+        prob = smoothed_sentence_probability(words, n, nfreqs, unaries);
+        cout << "\nSentence: " << line << endl;
+        cout << "Probability: " << prob << endl;
+    }
 }
