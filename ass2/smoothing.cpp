@@ -75,8 +75,47 @@ map<int, int> simple_gt(map<int, int> &Ncs){
         Ncs[i.first] = log(i.first)*a + b;
         }
     }
-    return Ncs;
 
+    return Ncs;
 }
 
+/*
+ * returns the smoothed probability of an ngram
+ *
+ * parameters:
+ * ngram - a vector of strings representing the ngram
+ * ngram_freqs - a map of all known ngrams and their frequency
+ * freq_freqs - a map of Nc, the amount of ngrams having a certain frequency
+ */
+double smoothed_probability(vector<string> ngram,
+                            const map<string, int> &ngram_freqs,
+                            const map<int, int> &freq_freqs)
+{
+    // first we get the ngram's count
+    auto c_it = ngram_freqs.find(nmap_to_string(ngram));
+    assert( c != ngram_freqs.end() );
+    int c = *c;
 
+    // now we get Nc and Nc+1 (using interpolation if either of them happen to
+    // be zero)
+    double nc = freq_freqs(c);
+    double nc1 = freq_freqs(c + 1);
+
+    ensure_nonzero(&nc, freq_freqs);
+    ensure_nonzero(&nc1, freq_freqs);
+
+    // using the Good-Turing formula to calculate a new count
+    double new_c = (c + 1) * (nc1 / nc);
+
+    return new_c / ngram_freqs.size();
+}
+
+/*
+ * if the given parameter c is 0, give it an interpolated value
+ */
+void ensure_nonzero(double *c, const map<int, int> &ncs)
+{
+    if (*c == 0) {
+        // *c = interpolated_value(*c, ncs);
+    }
+}
