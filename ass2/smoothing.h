@@ -20,5 +20,8 @@ void ensure_nonzero(double *c, const map<int, int> &ncs);
 double smoothed_probability(vector<string> ngram,
                             const map<string, int> &ngram_freqs,
                             const map<int, int> &freq_freqs);
+double smoothed_sentence_probability(const vector<string> &words, int n,
+                                     map<string, int> &nfreqs,
+                                     const map<string, int> &unaries);
 
 #endif // PROBABILITIES_H

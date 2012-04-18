@@ -109,5 +109,37 @@ void ensure_nonzero(double *c, const map<int, int> &ncs)
 {
     if (*c == 0) {
         // *c = interpolated_value(*c, ncs);
+        cout << "Warning: count of zero" << endl;
     }
+}
+
+/*
+ * calculates the probability of a sentence occurring
+ */
+double smoothed_sentence_probability(const vector<string> &words, int n,
+                                     map<string, int> &nfreqs,
+                                     const map<string, int> &unaries)
+{
+    vector<string> substring;
+    double probability = 1;
+    int m = words.size();
+
+    map<int, int> freq_freqs = nc_construct(nfreqs, unaries.size());
+
+    // outer "product" loop, looping through each n-gram in the sentence
+    for (int i = 1; i <= m; ++i) {
+        // inner loop for getting a substring of the sentence
+        for (int j = i - n; j < i; ++j) {
+            if (j < 0)
+                substring.push_back("<s>");
+            else
+                substring.push_back(words[j]);
+        }
+
+        // multiplying the total with the probability of this n-gram
+        probability *= smoothed_probability(substring, nfreqs, freq_freqs);
+        substring.clear();
+    }
+
+    return probability;
 }
