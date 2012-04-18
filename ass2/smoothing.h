@@ -13,9 +13,9 @@
 #include <assert.h>
 #include <math.h>
 
-map<int, int> nc_construct(map<string, int> &nmap, int unaries_size);
+map<int, double> nc_construct(map<string, int> &nmap, int unaries_size);
 void gt_smoothing(map<string, int> nmap, int n,int size_unaries);
-map<int, int> simple_gt(map<int, int> &Ncs);
+void simple_gt(map<int, double> &Ncs);
 void ensure_nonzero(double *c, const map<int, int> &ncs);
 double smoothed_probability(vector<string> ngram,
                             const map<string, int> &ngram_freqs,

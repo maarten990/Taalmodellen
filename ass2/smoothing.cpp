@@ -1,9 +1,9 @@
 #include "smoothing.h"
 
 // calculating the Ncs
-map<int, int> nc_construct(map<string, int> &nmap, int unaries_size){
+map<int, double> nc_construct(map<string, int> &nmap, int unaries_size){
     // Nc map;
-    map<int, int> Ncs;
+    map<int, double> Ncs;
     vector<string> keys;
     for (auto& i : nmap) {
         keys.push_back(i.first);
@@ -22,7 +22,7 @@ map<int, int> nc_construct(map<string, int> &nmap, int unaries_size){
 
 
     // Nc with c = 0 gets all the rest of the size
-    Ncs[0] = (nmap.size()*nmap.size()) - unaries_size;
+    Ncs[0] = (unaries_size * unaries_size) + 2*unaries_size - nmap.size();
 
     for(int c = 1 ; c < max_value + 1; c ++){
         Ncs[c] = 0;
@@ -36,46 +36,33 @@ map<int, int> nc_construct(map<string, int> &nmap, int unaries_size){
     return Ncs;
 }
 
-
-map<int, int> simple_gt(map<int, int> &Ncs){
+// simple_gt gives smoothing to all values
+void simple_gt(map<int, double> &Ncs){
     //now that we have filled the Ncs map we only need to change the 0 values
-    int counter = 0 ;
-    int pointx = 0;
-    int pointy = 0;
-    int pointx2 = 0;
-    int pointy2 = 0;
-    // find two pairs where Nc != 0
-    for( auto &i: Ncs){
-        if(i.second != 0 && counter == 0  ){
-            counter++;
-            pointx = i.first;
-            pointy = i.second;
-           }
-        if(i.second != 0 && counter == 1  ){
-            counter++;
-            pointx2 = i.first;
-            pointy2 = i.second;
-           }
-        if(counter == 2){
+    int pointx;
+    int pointy;
+    // look for the smallest nonzero size
+    for (int i = 0 ; i < Ncs.size(); i++){
+        if(Ncs[i] != 0){
+            pointx = Ncs[i];
+            pointy = i;
             break;
         }
     }
 
-    if(counter <2){
-        cout << "Not enough data" << endl;
-    }
-
     //calculate a
-    int a = (pointy2 - pointy)/(pointx2 - pointx);
+    double a =  ((double)(Ncs.size()-1 - pointy)/(double)(Ncs[Ncs.size()-1] - pointx));
+    cout << a << endl;
     // calculate b
-    int b = pointy - a * pointx;
-    // calculate new values for Nc = 0
+    double b = (double) pointy - a * pointx;
+    cout << b << endl;
+
+    // calculate new values for Ncs
     for ( auto &i:Ncs){
-        if( i.second == 0){
-        Ncs[i.first] = log(i.first)*a + b;
+        if(i.second == 0 ){
+            Ncs[i.first] = exp(log(i.first) * a + b);
         }
     }
-
     return Ncs;
 }
 

@@ -26,7 +26,11 @@ int main(int argc, char *argv[])
     map<string, int> n1_freqs = ngram_frequencies(corpus_path, n-1);
 
 
-    map<int, int> ncs  = nc_construct(n_freqs, unaries.size());
+    map<int, double> ncs  = nc_construct(n_freqs, unaries.size());
+    for(auto &c: ncs){
+        cout << c.first << " " << c.second << endl;
+    }
+    simple_gt(ncs);
     for(auto &c: ncs){
         cout << c.first << " " << c.second << endl;
     }
