@@ -26,7 +26,6 @@ int main(int argc, char *argv[])
     map<string, int> n1_freqs = ngram_frequencies(corpus_path, n-1);
 
 
-    /* inge's code
     map<int, int> ncs  = nc_construct(n_freqs, unaries.size());
     for(auto &c: ncs){
         cout << c.first << " " << c.second << endl;
@@ -37,7 +36,6 @@ int main(int argc, char *argv[])
     for(auto &c: ncs){
         cout << c.first << " " << c.second << endl;
     }
-    */
 
     // question 2
     //cout << "ngram probabilities:" << endl;

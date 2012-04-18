@@ -49,8 +49,13 @@ void simple_gt(map<int, int> &Ncs){
             break;
         }
     }
-
+    cout<< "Points!!!!" <<endl;
+    cout<< Ncs.size()-1 << endl;
+    cout << pointy << endl; // 0
+    cout << Ncs[Ncs.size()-1] << endl;
+    cout << pointx<<endl; //702358;
     //calculate a
+   // double a =((double)(Ncs[Ncs.size()-1] - pointx))/((double)(Ncs.size()-1 - pointy));
     double a =  ((double)(Ncs.size()-1 - pointy)/(double)(Ncs[Ncs.size()-1] - pointx));
     cout << a << endl;
     // calculate b
