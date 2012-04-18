@@ -71,7 +71,7 @@ void add_symbols(vector<string> &lines, int n)
 {
     // first we build the string containing n-1 <s> symbols to be prepended to each line
     string prefix = "";
-    for (int i = 0; i < n; ++i) {
+    for (int i = 0; i < n-1; ++i) {
         prefix.append("<s> ");
     }
 

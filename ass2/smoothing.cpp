@@ -4,6 +4,23 @@
 map<int, int> nc_construct(map<string, int> &nmap, int unaries_size){
     // Nc map;
     map<int, int> Ncs;
+    vector<string> keys;
+    for (auto& i : nmap) {
+        keys.push_back(i.first);
+    }
+
+    sort(keys.begin(),
+    keys.end(),
+    [&nmap](const string &a, const string &b) // lambda function!
+    {
+        return (nmap[a] > nmap[b]);
+    });
+
+    cout << keys[0] << endl;
+    cout << nmap[keys[0]] <<endl;
+    int max_value = nmap[keys[0]];
+
+
     // Nc with c = 0 gets all the rest of the size
     Ncs[0] = (nmap.size()*nmap.size()) - unaries_size;
 
