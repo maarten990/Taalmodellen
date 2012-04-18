@@ -27,9 +27,9 @@ int main(int argc, char *argv[])
 
 
     map<int, int> ncs  = nc_construct(n_freqs, unaries.size());
-    //for(auto &c: ncs){
-    //    cout << c.first << " " << c.second << endl;
-    //}
+    for(auto &c: ncs){
+        cout << c.first << " " << c.second << endl;
+    }
 
     // question 2
     //cout << "ngram probabilities:" << endl;

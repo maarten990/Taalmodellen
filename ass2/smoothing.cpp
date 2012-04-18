@@ -24,7 +24,7 @@ map<int, int> nc_construct(map<string, int> &nmap, int unaries_size){
     // Nc with c = 0 gets all the rest of the size
     Ncs[0] = (nmap.size()*nmap.size()) - unaries_size;
 
-    for(int c = 1 ; c < max_value; c ++){
+    for(int c = 1 ; c < max_value + 1; c ++){
         Ncs[c] = 0;
         // incrementing Nc value
         for( auto &i: nmap){
@@ -34,7 +34,6 @@ map<int, int> nc_construct(map<string, int> &nmap, int unaries_size){
         }
     }
     return Ncs;
-
 }
 
 
