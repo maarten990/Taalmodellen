@@ -25,6 +25,7 @@ int main(int argc, char *argv[])
     map<string, int> n_freqs = ngram_frequencies(corpus_path, n);
     map<string, int> n1_freqs = ngram_frequencies(corpus_path, n-1);
 
+    print_all_sentence_probs(sentences_path, n, n_freqs, unaries);
 
     map<int, int> ncs  = nc_construct(n_freqs, unaries.size());
     for(auto &c: ncs){
