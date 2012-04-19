@@ -13,6 +13,18 @@
 #include <assert.h>
 #include <math.h>
 
+struct Point
+{
+    double x;
+    double y;
+    
+    Point(double x_val, double y_val)
+    {
+        x = x_val;
+        y = y_val;
+    }
+};
+
 map<int, int> nc_construct(map<string, int> &nmap, int unaries_size);
 void gt_smoothing(map<string, int> nmap, int n,int size_unaries);
 void simple_gt(map<int, int> &Ncs);

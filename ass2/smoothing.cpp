@@ -54,18 +54,26 @@ void simple_gt(map<int, int> &Ncs){
     cout << pointy << endl; // 0
     cout << Ncs[Ncs.size()-1] << endl;
     cout << pointx<<endl; //702358;
+    
+    
+    int pointx2 =  Ncs[Ncs.size()-1];
+    int pointy2 = Ncs.size()-1;
     //calculate a
-   // double a =((double)(Ncs[Ncs.size()-1] - pointx))/((double)(Ncs.size()-1 - pointy));
-    double a =  ((double)(Ncs.size()-1 - pointy)/(double)(Ncs[Ncs.size()-1] - pointx));
+    double a =(double)( log(pointy) - log(pointy2))/ (double)(log(pointx) - log(pointx2));
+    //double a =  ((double)(log(Ncs.size()-1) - log(pointy))/(double)(log(Ncs[Ncs.size()-1]) - log(pointx)));
     cout << a << endl;
+    
     // calculate b
-    double b = (double) pointy - a * pointx;
+    //double b = (double) pointy - a * pointx;
+    //double b = log(pointy) - a * log(pointx); 
+    double b = ((double)(log(pointx)*log(pointy2)-log(pointx2)*log(pointy)))/(double)((log(pointx)-log(pointy)));
     cout << b << endl;
 
     // calculate new values for Ncs
     for ( auto &i:Ncs){
         if(i.second == 0 ){
-            Ncs[i.first] = exp(log(i.first) * a + b);
+            Ncs[i.first] = exp(b) + pow(i.first, a);
+            //Ncs[i.first] = exp(log(i.first) * a + b);
         }
     }
 }
