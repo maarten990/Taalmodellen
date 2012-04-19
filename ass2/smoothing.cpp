@@ -223,6 +223,7 @@ double get_c_star_backoff(vector<string> ngram,
 
     ensure_nonzero(&nc, freq_freqs);
     ensure_nonzero(&nc1, freq_freqs);
+    
     double c_star;
     // in case count = 0
     if(c == 0 ){
