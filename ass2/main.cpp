@@ -10,9 +10,13 @@ using namespace std;
 int main(int argc, char *argv[])
 {
     if (argc < 4) {
-        cout << "Usage: ass2 n corpus sentences" << endl;
+        cout << "Usage: ass2 n corpus sentences [-k]" << endl;
         exit(0);
     }
+    
+    bool with_katz = false;
+    if (argc == 5)
+        with_katz = true;
 
     // parsing arguments
     int n = atoi(argv[1]);

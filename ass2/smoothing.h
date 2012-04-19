@@ -35,21 +35,23 @@ double smoothed_probability(vector<string> ngram,
                             const map<int, int> &freq_freqs);
 double smoothed_sentence_probability(const vector<string> &words, int n,
                                      map<string, int> &nfreqs,
-                                     const map<string, int> &unaries);
+                                     const map<string, int> &unaries,
+                                     bool katz=false);
 double get_c_star(vector<string> ngram,
                   const map<string, int> &ngram_freqs,
                   map<int, int> &freq_freqs);
 
 double smoothed_probability_backoff(vector<string> ngram,
                             const map<string, int> &ngram_freqs,
-                            const map<int, int> &freq_freqs, int k);
+                            const map<int, int> &freq_freqs, int k=5);
 
 double get_c_star_backoff(vector<string> ngram,
                   const map<string, int> &ngram_freqs,
-                  map<int, int> &freq_freqs, int k);
+                  map<int, int> &freq_freqs, int k=5);
 
 void print_all_sentence_probs(char *file_path, int n, 
                               map<string, int> &nfreqs,
-                              map<string, int> &unaries);
+                              map<string, int> &unaries,
+                              bool katz=false);
 
 #endif // PROBABILITIES_H

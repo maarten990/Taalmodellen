@@ -262,7 +262,8 @@ void ensure_nonzero(int c, double *nc, const map<int, int> &ncs)
  */
 double smoothed_sentence_probability(const vector<string> &words, int n,
                                      map<string, int> &nfreqs,
-                                     const map<string, int> &unaries)
+                                     const map<string, int> &unaries,
+                                     bool katz)
 {
     vector<string> substring;
     double probability_log = 0;
@@ -283,7 +284,10 @@ double smoothed_sentence_probability(const vector<string> &words, int n,
 
         // multiplying the total with the probability of this n-gram
         double temp_debug;
-        temp_debug = smoothed_probability(substring, nfreqs, freq_freqs);
+        if (katz)
+            temp_debug = smoothed_probability_backoff(substring, nfreqs, freq_freqs, 5);
+        else
+            temp_debug = smoothed_probability(substring, nfreqs, freq_freqs);
         probability_log += log(temp_debug);
         substring.clear();
     }
@@ -293,7 +297,8 @@ double smoothed_sentence_probability(const vector<string> &words, int n,
 
 void print_all_sentence_probs(char *file_path, int n, 
                               map<string, int> &nfreqs,
-                              map<string, int> &unaries)
+                              map<string, int> &unaries,
+                              bool katz)
 {
     ifstream file(file_path);
     
