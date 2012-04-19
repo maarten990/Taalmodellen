@@ -44,30 +44,34 @@ void simple_gt(map<int, int> &Ncs){
     // look for the smallest nonzero size
     for (int i = 0 ; i < Ncs.size(); i++){
         if(Ncs[i] != 0){
-            pointx = Ncs[i];
-            pointy = i;
+            pointy = Ncs[i];
+            pointx = i;
             break;
         }
     }
-    cout<< "Points!!!!" <<endl;
-    cout<< Ncs.size()-1 << endl;
-    cout << pointy << endl; // 0
-    cout << Ncs[Ncs.size()-1] << endl;
-    cout << pointx<<endl; //702358;
     
+    // from the back, look for the first frequency with a >1 frequency
+    int pointx2;
+    int pointy2;
+    for (int i = Ncs.size() - 1; i > 0; --i) {
+        if (Ncs[i] > 1) {
+            pointx2 = i;
+            pointy2 = Ncs[i];
+            break;
+        }
+    }
     
-    int pointx2 =  Ncs[Ncs.size()-1];
-    int pointy2 = Ncs.size()-1;
-    //calculate a
-    double a =(double)( log(pointy) - log(pointy2))/ (double)(log(pointx) - log(pointx2));
-    //double a =  ((double)(log(Ncs.size()-1) - log(pointy))/(double)(log(Ncs[Ncs.size()-1]) - log(pointx)));
-    cout << a << endl;
+    Point point_left(pointx, pointy);
+    Point point_right(pointx2, pointy2);
     
-    // calculate b
-    //double b = (double) pointy - a * pointx;
-    //double b = log(pointy) - a * log(pointx); 
-    double b = ((double)(log(pointx)*log(pointy2)-log(pointx2)*log(pointy)))/(double)((log(pointx)-log(pointy)));
-    cout << b << endl;
+    //calculate a and b
+    long double a = ( log(point_left.x) * log(point_right.y) - log(point_right.x) * log(point_left.y) )
+               / // division line
+               ( log(point_left.x) - log(point_right.x) );
+    
+    long double b = ( log(point_left.y) - log(point_right.y) )
+               /
+               ( log(point_left.x) - log(point_right.x) );
 
     // calculate new values for Ncs
     for ( auto &i:Ncs){
