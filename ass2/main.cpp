@@ -9,7 +9,7 @@ using namespace std;
 
 int main(int argc, char *argv[])
 {
-    if (argc < 5) {
+    if (argc < 4) {
         cout << "Usage: ass2 n corpus sentences" << endl;
         exit(0);
     }

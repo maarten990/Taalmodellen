@@ -21,8 +21,6 @@ map<int, int> nc_construct(map<string, int> &nmap, int unaries_size){
         return (nmap[a] > nmap[b]);
     });
 
-    cout << keys[0] << endl;
-    cout << nmap[keys[0]] <<endl;
     int max_value = nmap[keys[0]];
 
 
@@ -137,8 +135,11 @@ double get_c_star(vector<string> ngram,
 {
     // first we get the ngram's count
     auto c_it = ngram_freqs.find(nmap_to_string(ngram));
-    assert( c_it != ngram_freqs.end() );
-    int c = c_it->second;
+    int c;
+    if (c_it != ngram_freqs.end())
+        c = c_it->second;
+    else
+        c = 0;
 
     // now we get Nc and Nc+1 (using interpolation if either of them happen to
     // be zero)
