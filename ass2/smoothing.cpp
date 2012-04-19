@@ -69,11 +69,11 @@ void simple_gt(map<int, int> &Ncs){
     
     //calculate a and b
     // WARNING: these are the a and b as specified in Jurasky & Martin; b is the slope while a is the intercept
-    double g_a = ( log(point_left.x) * log(point_right.y) - log(point_right.x) * log(point_left.y) )
+    g_a = ( log(point_left.x) * log(point_right.y) - log(point_right.x) * log(point_left.y) )
                / // division line
                ( log(point_left.x) - log(point_right.x) );
     
-    double g_b = ( log(point_left.y) - log(point_right.y) )
+    g_b = ( log(point_left.y) - log(point_right.y) )
                /
                ( log(point_left.x) - log(point_right.x) );
 }
@@ -125,6 +125,10 @@ double smoothed_probability(vector<string> ngram,
         wn1.clear();
         tokens.clear();
     }
+    
+    // if no words have matched, just return 0 and get it over with
+    if (sum == 0)
+        return 0;
 
     return c_star / sum;
 }
@@ -146,8 +150,8 @@ double get_c_star(vector<string> ngram,
     double nc = freq_freqs[c];
     double nc1 = freq_freqs[c + 1];
 
-    ensure_nonzero(&nc, freq_freqs);
-    ensure_nonzero(&nc1, freq_freqs);
+    ensure_nonzero(c, &nc, freq_freqs);
+    ensure_nonzero(c+1, &nc1, freq_freqs);
 
     // using the Good-Turing formula to calculate a new count
     double c_star = (c + 1) * (nc1 / nc);
@@ -222,8 +226,8 @@ double get_c_star_backoff(vector<string> ngram,
     double nc = freq_freqs[c];
     double nc1 = freq_freqs[c + 1];
 
-    ensure_nonzero(&nc, freq_freqs);
-    ensure_nonzero(&nc1, freq_freqs);
+    ensure_nonzero(c, &nc, freq_freqs);
+    ensure_nonzero(c+1, &nc1, freq_freqs);
     
     double c_star;
     // in case count = 0
@@ -246,10 +250,10 @@ double get_c_star_backoff(vector<string> ngram,
 /*
  * if the given parameter c is 0, give it an interpolated value
  */
-void ensure_nonzero(double *c, const map<int, int> &ncs)
+void ensure_nonzero(int c, double *nc, const map<int, int> &ncs)
 {
-    if (*c == 0) {
-        *c = interpolate(*c);
+    if (*nc == 0) {
+        *nc = interpolate(c);
     }
 }
 
@@ -261,7 +265,7 @@ double smoothed_sentence_probability(const vector<string> &words, int n,
                                      const map<string, int> &unaries)
 {
     vector<string> substring;
-    double probability = 1;
+    double probability_log = 0;
     int m = words.size();
 
     map<int, int> freq_freqs = nc_construct(nfreqs, unaries.size());
@@ -278,11 +282,13 @@ double smoothed_sentence_probability(const vector<string> &words, int n,
         }
 
         // multiplying the total with the probability of this n-gram
-        probability *= smoothed_probability(substring, nfreqs, freq_freqs);
+        double temp_debug;
+        temp_debug = smoothed_probability(substring, nfreqs, freq_freqs);
+        probability_log += log(temp_debug);
         substring.clear();
     }
 
-    return probability;
+    return exp(probability_log);
 }
 
 void print_all_sentence_probs(char *file_path, int n, 
