@@ -150,6 +150,94 @@ double get_c_star(vector<string> ngram,
     return c_star;
 }
 
+
+
+/*
+ * returns the smoothed probability of an ngram
+ *
+ * parameters:
+ * ngram - a vector of strings representing the ngram
+ * ngram_freqs - a map of all known ngrams and their frequency
+ * freq_freqs - a map of Nc, the amount of ngrams having a certain frequency
+ */
+double smoothed_probability_backoff(vector<string> ngram,
+                            const map<string, int> &ngram_freqs,
+                            map<int, int> &freq_freqs, int k)
+{
+
+    // first we got the top part of the division
+    double c_star = get_c_star_backoff(ngram, ngram_freqs, freq_freqs, k);
+    // now we calculate the summation on the bottom of the division
+    // slow, naive method
+    double sum = 0;
+    vector<string> tokens, wn1;
+    string tokens_head;
+    for (auto& key_val : ngram_freqs) {
+        // tokens will contain the key of the map in vector-of-words form
+        tokens = split_line(key_val.first);
+
+        // copying the first n-1 elements of the ngram to the vector wn1
+        for (auto i = ngram.begin(); i != ngram.end()-1; ++i) {
+            wn1.push_back(*i);
+        }
+
+        // popping the tokens temporarily to equality check the first n-1 elements
+        tokens_head = tokens.back();
+        tokens.pop_back();
+
+        if (wn1 == tokens) {
+            tokens.push_back(tokens_head);
+            sum += get_c_star(tokens, ngram_freqs, freq_freqs);
+        }
+
+        // clearing stuff for the next iteration
+        wn1.clear();
+        tokens.clear();
+    }
+
+    return c_star / sum;
+}
+
+
+
+
+
+// new c_star backoff with int k to know when backoff should be done
+double get_c_star_backoff(vector<string> ngram,
+                          const map<string, int> &ngram_freqs,
+                          map<int, int> &freq_freqs, int k)
+{
+
+    // first we get the ngram's count
+    auto c_it = ngram_freqs.find(nmap_to_string(ngram));
+    assert( c_it != ngram_freqs.end() );
+    int c = c_it->second;
+
+    // now we get Nc and Nc+1 (using interpolation if either of them happen to
+    // be zero)
+    double nc = freq_freqs[c];
+    double nc1 = freq_freqs[c + 1];
+
+    ensure_nonzero(&nc, freq_freqs);
+    ensure_nonzero(&nc1, freq_freqs);
+    double c_star;
+    // in case count = 0
+    if(c == 0 ){
+
+        // using the Good-Turing formula to calculate a new count
+        c_star = (c + 1) * (nc1 / nc);
+    }
+    else if(c <= k)
+    {
+        c_star = (((c+1)*(nc1/nc))-c *(((k+1)*freq_freqs[k+1])/freq_freqs[1]))/
+                1-((k+1)*freq_freqs[k+1]/freq_freqs[1]);
+    }
+    else{
+        c_star = c;
+    }
+    return c_star;
+}
+
 /*
  * if the given parameter c is 0, give it an interpolated value
  */

@@ -39,6 +39,14 @@ double get_c_star(vector<string> ngram,
                   const map<string, int> &ngram_freqs,
                   map<int, int> &freq_freqs);
 
+double smoothed_probability_backoff(vector<string> ngram,
+                            const map<string, int> &ngram_freqs,
+                            const map<int, int> &freq_freqs, int k);
+
+double get_c_star_backoff(vector<string> ngram,
+                  const map<string, int> &ngram_freqs,
+                  map<int, int> &freq_freqs, int k);
+
 void print_all_sentence_probs(char *file_path, int n, 
                               map<string, int> &nfreqs,
                               map<string, int> &unaries);
