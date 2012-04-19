@@ -1,5 +1,10 @@
 #include "smoothing.h"
 
+// ugly ass global variables to hold the interpolation parameters because
+// fuck me if I'm going to change every existing function to take another two parameters
+double g_a = 0;
+double g_b = 0;
+
 // calculating the Ncs
 map<int, int> nc_construct(map<string, int> &nmap, int unaries_size){
     // Nc map;
@@ -66,20 +71,18 @@ void simple_gt(map<int, int> &Ncs){
     
     //calculate a and b
     // WARNING: these are the a and b as specified in Jurasky & Martin; b is the slope while a is the intercept
-    long double a = ( log(point_left.x) * log(point_right.y) - log(point_right.x) * log(point_left.y) )
+    double g_a = ( log(point_left.x) * log(point_right.y) - log(point_right.x) * log(point_left.y) )
                / // division line
                ( log(point_left.x) - log(point_right.x) );
     
-    long double b = ( log(point_left.y) - log(point_right.y) )
+    double g_b = ( log(point_left.y) - log(point_right.y) )
                /
                ( log(point_left.x) - log(point_right.x) );
+}
 
-    // calculate new values for Ncs
-    for ( auto &i:Ncs){
-        if(i.second == 0 ){
-            Ncs[i.first] = exp(a + b * log(i.first));
-        }
-    }
+double interpolate ( int x )
+{
+    return exp(g_a + g_b + log(x);
 }
 
 /*
@@ -244,9 +247,7 @@ double get_c_star_backoff(vector<string> ngram,
 void ensure_nonzero(double *c, const map<int, int> &ncs)
 {
     if (*c == 0) {
-        // *c = interpolated_value(*c, ncs);
-        //cout << "Warning: count of zero" << endl;
-        *c = 1;
+        *c = interpolate(*c);
     }
 }
 
