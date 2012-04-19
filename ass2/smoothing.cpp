@@ -42,7 +42,7 @@ void simple_gt(map<int, int> &Ncs){
     int pointx;
     int pointy;
     // look for the smallest nonzero size
-    for (int i = 0 ; i < Ncs.size(); i++){
+    for (int i = 1 ; i < Ncs.size(); i++){
         if(Ncs[i] != 0){
             pointy = Ncs[i];
             pointx = i;
@@ -65,6 +65,7 @@ void simple_gt(map<int, int> &Ncs){
     Point point_right(pointx2, pointy2);
     
     //calculate a and b
+    // WARNING: these are the a and b as specified in Jurasky & Martin; b is the slope while a is the intercept
     long double a = ( log(point_left.x) * log(point_right.y) - log(point_right.x) * log(point_left.y) )
                / // division line
                ( log(point_left.x) - log(point_right.x) );
@@ -76,7 +77,7 @@ void simple_gt(map<int, int> &Ncs){
     // calculate new values for Ncs
     for ( auto &i:Ncs){
         if(i.second == 0 ){
-            Ncs[i.first] = exp(b) + pow(i.first, a);
+            Ncs[i.first] = exp(a) + pow(i.first, b);
             //Ncs[i.first] = exp(log(i.first) * a + b);
         }
     }
