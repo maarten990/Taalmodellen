@@ -82,7 +82,7 @@ void simple_gt(map<int, int> &Ncs){
 
 double interpolate ( int x )
 {
-    return exp(g_a + g_b + log(x);
+    return exp(g_a + g_b + log(x));
 }
 
 /*
