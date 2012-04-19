@@ -54,7 +54,7 @@ void simple_gt(map<int, int> &Ncs){
     int pointx2;
     int pointy2;
     for (int i = Ncs.size() - 1; i > 0; --i) {
-        if (Ncs[i] > 1) {
+        if (Ncs[i] > 10) {
             pointx2 = i;
             pointy2 = Ncs[i];
             break;
@@ -77,8 +77,7 @@ void simple_gt(map<int, int> &Ncs){
     // calculate new values for Ncs
     for ( auto &i:Ncs){
         if(i.second == 0 ){
-            Ncs[i.first] = exp(a) + pow(i.first, b);
-            //Ncs[i.first] = exp(log(i.first) * a + b);
+            Ncs[i.first] = exp(a + b * log(i.first));
         }
     }
 }
