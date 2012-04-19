@@ -33,7 +33,7 @@ int main(int argc, char *argv[])
     map<int, int> ncs  = nc_construct(n_freqs, unaries.size());
     simple_gt(ncs); // this readies the global variables
 
-    print_all_sentence_probs(sentences_path, n, n_freqs, unaries);
+    print_all_sentence_probs(sentences_path, n, n_freqs, unaries, with_katz);
 
     return 0;
 }
