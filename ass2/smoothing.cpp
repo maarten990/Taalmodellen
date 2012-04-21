@@ -218,8 +218,11 @@ double get_c_star_backoff(vector<string> ngram,
 
     // first we get the ngram's count
     auto c_it = ngram_freqs.find(nmap_to_string(ngram));
-    assert( c_it != ngram_freqs.end() );
-    int c = c_it->second;
+    int c;
+    if (c_it != ngram_freqs.end())
+        c = c_it->second;
+    else
+        c = 0;
 
     // now we get Nc and Nc+1 (using interpolation if either of them happen to
     // be zero)
@@ -309,7 +312,7 @@ void print_all_sentence_probs(char *file_path, int n,
         getline(file, line);
         words = split_line(line);
         
-        prob = smoothed_sentence_probability(words, n, nfreqs, unaries);
+        prob = smoothed_sentence_probability(words, n, nfreqs, unaries, katz);
         cout << "\nSentence: " << line << endl;
         cout << "Probability: " << prob << endl;
     }
