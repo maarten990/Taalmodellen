@@ -291,7 +291,10 @@ double smoothed_sentence_probability(const vector<string> &words, int n,
             temp_debug = smoothed_probability_backoff(substring, nfreqs, freq_freqs, 5);
         else
             temp_debug = smoothed_probability(substring, nfreqs, freq_freqs);
-        probability_log += log(temp_debug);
+
+        // protecting against invalid values
+        if (temp_debug != 0)
+            probability_log += log(temp_debug);
         substring.clear();
     }
 
