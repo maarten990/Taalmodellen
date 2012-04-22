@@ -53,5 +53,7 @@ void print_all_sentence_probs(char *file_path, int n,
                               map<string, int> &nfreqs,
                               map<string, int> &unaries,
                               bool katz=false);
+vector<string> binary_search(vector<string> &n1gram,
+                  vector<string> &nfreqs);
 
 #endif // PROBABILITIES_H

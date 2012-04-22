@@ -91,46 +91,42 @@ double interpolate ( int x )
  * ngram_freqs - a map of all known ngrams and their frequency
  * freq_freqs - a map of Nc, the amount of ngrams having a certain frequency
  */
+map<string, double> g_cache;
 double smoothed_probability(vector<string> ngram,
                             const map<string, int> &ngram_freqs,
                             map<int, int> &freq_freqs)
 {
+    // caching for speed
+    auto cached = g_cache.find(nmap_to_string(ngram));
+    if (cached != g_cache.end()) {
+        return cached->second;
+    }
     
     // first we got the top part of the division
     double c_star = get_c_star(ngram, ngram_freqs, freq_freqs);
+
     // now we calculate the summation on the bottom of the division
-    // slow, naive method
-    double sum = 0;
-    vector<string> tokens, wn1;
-    string tokens_head;
-    for (auto& key_val : ngram_freqs) {
-        // tokens will contain the key of the map in vector-of-words form
-        tokens = split_line(key_val.first);
-        
-        // copying the first n-1 elements of the ngram to the vector wn1
-        for (auto i = ngram.begin(); i != ngram.end()-1; ++i) {
-            wn1.push_back(*i);
-        }
-        
-        // popping the tokens temporarily to equality check the first n-1 elements
-        tokens_head = tokens.back();
-        tokens.pop_back();
-        
-        if (wn1 == tokens) {
-            tokens.push_back(tokens_head);
-            sum += get_c_star(tokens, ngram_freqs, freq_freqs);
-        }
-        
-        // clearing stuff for the next iteration
-        wn1.clear();
-        tokens.clear();
+    vector<string> n1gram(ngram);
+    n1gram.pop_back();
+    vector<string> keys;
+    for (auto& i : ngram_freqs) {
+        keys.push_back(i.first);
     }
-    
+    vector<string> candidates = binary_search(n1gram, keys);
+    double sum = 0;
+
+    for (auto& grammie : candidates) {
+        sum += get_c_star(split_line(grammie), ngram_freqs, freq_freqs);
+    }
+
     // if no words have matched, just return 0 and get it over with
     if (sum == 0)
         return 0;
 
-    return c_star / sum;
+    // insert the output into the cache and return it
+    double output = c_star / sum;
+    g_cache[nmap_to_string(ngram)] = output;
+    return output;
 }
 
 double get_c_star(vector<string> ngram,
@@ -248,6 +244,75 @@ double get_c_star_backoff(vector<string> ngram,
         c_star = c;
     }
     return c_star;
+}
+
+vector<string> binary_search(vector<string> &n1gram,
+                  vector<string> &nfreqs)
+{
+    int imax = nfreqs.size();
+    int imin = 0;
+    auto begin = nfreqs.begin();
+    vector<string> key;
+    vector<string> previous;
+    int current_pos;
+
+    while (1) {
+        if (imax < imin) {
+            vector<string> out;
+            return out;
+        }
+
+        current_pos = (imax + imin)/2;
+
+        key = split_line(*(begin + current_pos));
+        key.pop_back();
+
+        // special case for <s>
+        if (n1gram[0] == "<s>") {
+            current_pos = 0;
+            break;
+        }
+
+        // if we're close
+        if (key == n1gram) {
+            previous = split_line(*(begin + current_pos - 1));
+            previous.pop_back();
+            if (n1gram == previous) {
+                imax = current_pos - 1;
+                continue;
+            } else { // we've found the first occurrence!
+                break;
+            }
+        }
+
+        // if we're not close
+        else {
+            int comparison = nmap_to_string(key).compare(nmap_to_string(n1gram));
+            // n1gram is lower in the alphabet
+            if (comparison > 0) {
+                imax = current_pos - 1;
+                continue;
+            }
+            // n1gram is higher in the alphabet
+            else {
+                imin = current_pos + 1;
+                continue;
+            }
+        }
+    }
+
+    // gathering the output
+    vector<string> result;
+    for (int i = current_pos; i < nfreqs.size(); ++i) {
+        vector<string> w = split_line(nfreqs[i]);
+        w.pop_back();
+        if (w == n1gram)
+            result.push_back(nfreqs[i]);
+        else
+            break;
+    }
+
+    return result;
 }
 
 /*
