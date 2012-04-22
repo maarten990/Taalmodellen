@@ -32,10 +32,12 @@ double interpolate(int x);
 void ensure_nonzero(int c, double *nc, const map<int, int> &ncs);
 double smoothed_probability(vector<string> ngram,
                             const map<string, int> &ngram_freqs,
+                            vector<string> &keys,
                             const map<int, int> &freq_freqs);
 double smoothed_sentence_probability(const vector<string> &words, int n,
                                      map<string, int> &nfreqs,
                                      const map<string, int> &unaries,
+                                     vector<string> keys,
                                      bool katz=false);
 double get_c_star(vector<string> ngram,
                   const map<string, int> &ngram_freqs,

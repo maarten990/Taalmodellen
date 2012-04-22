@@ -94,6 +94,7 @@ double interpolate ( int x )
 map<string, double> g_cache;
 double smoothed_probability(vector<string> ngram,
                             const map<string, int> &ngram_freqs,
+                            vector<string> &keys,
                             map<int, int> &freq_freqs)
 {
     // caching for speed
@@ -108,10 +109,6 @@ double smoothed_probability(vector<string> ngram,
     // now we calculate the summation on the bottom of the division
     vector<string> n1gram(ngram);
     n1gram.pop_back();
-    vector<string> keys;
-    for (auto& i : ngram_freqs) {
-        keys.push_back(i.first);
-    }
     vector<string> candidates = binary_search(n1gram, keys);
     double sum = 0;
 
@@ -331,7 +328,7 @@ void ensure_nonzero(int c, double *nc, const map<int, int> &ncs)
 double smoothed_sentence_probability(const vector<string> &words, int n,
                                      map<string, int> &nfreqs,
                                      const map<string, int> &unaries,
-                                     bool katz)
+                                     vector<string> keys, bool katz)
 {
     vector<string> substring;
     double probability_log = 0;
@@ -355,7 +352,7 @@ double smoothed_sentence_probability(const vector<string> &words, int n,
         if (katz)
             temp_debug = smoothed_probability_backoff(substring, nfreqs, freq_freqs, 5);
         else
-            temp_debug = smoothed_probability(substring, nfreqs, freq_freqs);
+            temp_debug = smoothed_probability(substring, nfreqs, keys,freq_freqs);
 
         // protecting against invalid values
         if (temp_debug != 0)
@@ -372,7 +369,12 @@ void print_all_sentence_probs(char *file_path, int n,
                               bool katz)
 {
     ifstream file(file_path);
-    
+
+    vector<string> keys;
+    for (auto& i : nfreqs) {
+        keys.push_back(i.first);
+    }
+
     double prob;
     string line;
     vector<string> words;
@@ -380,7 +382,7 @@ void print_all_sentence_probs(char *file_path, int n,
         getline(file, line);
         words = split_line(line);
         
-        prob = smoothed_sentence_probability(words, n, nfreqs, unaries, katz);
+        prob = smoothed_sentence_probability(words, n, nfreqs, unaries, keys, katz);
         cout << "\nSentence: " << line << endl;
         cout << "Probability: " << prob << endl;
     }
