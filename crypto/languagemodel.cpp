@@ -18,15 +18,10 @@ LanguageModel::LanguageModel(const char corpus_path[])
     while (file.good()) {
         getline(file, line);
 
-        // for each letter
+        // for each letter we increase its count
         for (auto letter = line.begin(); letter != line.end(); ++letter) {
             unigram_counts[string(1, *letter)] += 1;
-
-            // special case for the first letter and the bigram model
-            if (letter == line.begin())
-                bigram_counts["<s>" + string(1, *letter)] += 1;
-            else
-                bigram_counts[string(letter-1, letter+1)] += 1;
+            bigram_counts[string(letter-1, letter+1)] += 1;
         }
     }
 }
