@@ -24,8 +24,8 @@ map<int, int> nc_construct(map<string, int> &nmap, int unaries_size){
     int max_value = nmap[keys[0]];
 
 
-    // Nc with c = 0 gets all the rest of the size
-    Ncs[0] = (unaries_size * unaries_size) + 2*unaries_size - nmap.size();
+    // Nc with c = 0 will be interpolated like the rest
+    Ncs[0] = 0;
 
     for(int c = 1 ; c < max_value + 1; c ++){
         Ncs[c] = 0;
@@ -307,16 +307,23 @@ void print_all_sentence_probs(char *file_path, int n,
                               bool katz)
 {
     ifstream file(file_path);
-    
+
     double prob;
     string line;
+    double max_value = 0;
+    string max_line;
     vector<string> words;
     while (file.good()) {
         getline(file, line);
         words = split_line(line);
         
         prob = smoothed_sentence_probability(words, n, nfreqs, unaries, katz);
-        cout << "\nSentence: " << line << endl;
-        cout << "Probability: " << prob << endl;
+        if(prob > max_value && line != ""){
+            max_value = prob;
+            max_line = line;
+        }
+        //cout << "\nSentence: " << line << endl;
+        //cout << "Probability: " << prob << endl;
     }
+    cout << max_line << endl;
 }
