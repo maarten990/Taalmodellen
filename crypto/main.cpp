@@ -1,4 +1,4 @@
-#include "wordmodel.h"
+#include "languagemodel.h"
 #include <iostream>
 #include <map>
 
