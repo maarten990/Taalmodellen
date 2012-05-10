@@ -1,10 +1,14 @@
 #ifndef RELATIVE_FREQUENCIES_H
 #define RELATIVE_FREQUENCIES_H
 
-class relative_frequencies
+class Relative_frequencies
 {
 public:
-    relative_frequencies();
+    Relative_frequencies(std::string corpus_path);
+
+    // The maps used for relative frequency storage
+    map<string, double> cipher;
+    map<string, double> corpus;
 };
 
 #endif // RELATIVE_FREQUENCIES_H
