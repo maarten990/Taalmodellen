@@ -21,7 +21,9 @@ LanguageModel::LanguageModel(const char corpus_path[])
         // for each letter we increase its count
         for (auto letter = line.begin(); letter != line.end(); ++letter) {
             unigram_counts[string(1, *letter)] += 1;
-            bigram_counts[string(letter-1, letter+1)] += 1;
+
+            if (line != line.begin()) // safeguard for the first element
+                bigram_counts[string(letter-1, letter+1)] += 1;
         }
     }
 }
