@@ -5,6 +5,15 @@
 
 using namespace std;
 
+// the entire alphabet!
+vector<string> LanguageModel::alphabet =
+{"a", "b", "c", "d", "e", "f", "g", "h", "i", "j",
+ "k", "l", "m", "n", "o", "p", "q", "r", "s", "t",
+ "u", "v", "w", "x", "y", "z"};
+
+/*
+ * constructors plus helper functions
+ */
 LanguageModel::LanguageModel(string corpus_path)
 {
     // delegate it to the char[] constructor
@@ -14,26 +23,18 @@ LanguageModel::LanguageModel(string corpus_path)
 LanguageModel::LanguageModel(const char corpus_path[])
 {
     // getting the counts
-    map<string, int> unigram_counts, bigram_counts;
-    initialize_counts(corpus_path, unigram_counts, bigram_counts);
+    initialize_counts(corpus_path, m_unicounts, m_bicounts);
 
-    // getting the total uni- and bigram counts
-    int N_unigram = 0, N_bigram = 0;
-    for_each(unigram_counts.begin(), unigram_counts.end(),
-             [&N_unigram](pair<string, int> p) { N_unigram += p.second; });
-    for_each(bigram_counts.begin(), bigram_counts.end(),
-             [&N_bigram](pair<string, int> p) { N_bigram += p.second; });
-
-    // converting counts to relative frequencies
-    for (auto &p : unigram_counts)
-        m_uni_relcount[p.first] = p.second / static_cast<double>(N_unigram);
-    for (auto &p : bigram_counts)
-        m_bi_relcount[p.first] = p.second / static_cast<double>(N_bigram);
+    // making sure the unigram count contains each letter to avoid division by
+    // zero errors
+    for(string &letter : alphabet) {
+        m_unicounts[letter] += 0;
+    }
 }
 
 void LanguageModel::initialize_counts(const char corpus_path[],
-                                 map<string, int> &unigram_counts,
-                                 map<string, int> &bigram_counts)
+                                      map<string, int> &unigram_counts,
+                                      map<string, int> &bigram_counts)
 {
     ifstream file(corpus_path);
     string line;
@@ -51,4 +52,23 @@ void LanguageModel::initialize_counts(const char corpus_path[],
                 bigram_counts[string(letter-1, letter+1)] += 1;
         }
     }
+}
+
+/*
+ * the overloaded probability methods
+ */
+double LanguageModel::get_probability(char a, char b)
+{
+    return get_probability(string(1, a) + string(1, b));
+}
+
+double LanguageModel::get_probability(string a, string b)
+{
+    return get_probability(a + b);
+}
+
+double LanguageModel::get_probability(string bigram)
+{
+    string uni = string(1, bigram.at(0));
+    return m_bicounts[bigram] / m_unicounts[uni];
 }
