@@ -1,12 +1,8 @@
 #include "relative_frequencies.h"
-#include <iostream>
-#include <fstream>
-
-using namespace std;
 
 Relative_frequencies::Relative_frequencies(string corpus_path)
 {
-    Relative_frequencies::Relative_frequencies(corpus_path.c_str());
+    Relative_frequencies(corpus_path.c_str());
 }
 
 Relative_frequencies::Relative_frequencies(const char corpus_path[])
@@ -15,35 +11,54 @@ Relative_frequencies::Relative_frequencies(const char corpus_path[])
     ifstream file(corpus_path);
     string line;
 
+    // Total count of all letter in the file
+    int total_count_N = 0;
+
+    // string with all letters in the alphabet
+    string alphabet = "abcdefghijklmnopqrstuvwxyz";
+
     // while file is good
     while (file.good()) {
         getline(file, line);
 
-        //alphabet = "abc...z"
-        //if (alphabet.find(jouw_string) != alphabet.end())
-            // het is een letter
         // increment all lettes per line in the corpus map
        for (auto letter = line.begin(); letter != line.end(); ++ letter)
        {
-           if();
+            // given the iterator points at a letter
+            if (alphabet.find(string(1,*letter)) != string::npos)
+            {
+                // add 1 to the correct cipher map
+                corpus[string(1, *letter)] += 1;
+                // increment totalcount
+                total_count_N += 1;
+            }
        }
+
     }
+    // we use function relative_frequency to set all letters to their relative
+    // frequency. All not occuring letters are set to 0.
+    relative_frequency(total_count_N);
 }
 
+// Relative frequency introduces the relative count to the absolute count
+void Relative_frequencies::relative_frequency(int N){
 
-
-LanguageModel::LanguageModel(const char corpus_path[])
-{
-    ifstream file(corpus_path);
-    string line;
-
-    while (file.good()) {
-        getline(file, line);
-
-        // for each letter we increase its count
-        for (auto letter = line.begin(); letter != line.end(); ++letter) {
-            unigram_counts[string(1, *letter)] += 1;
-            bigram_counts[string(letter-1, letter+1)] += 1;
+    string alfabet = "abcdefghijklmnopqrstuvwxyz";
+    // For all letters in the alfabet
+    for ( auto letter = alfabet.begin(); letter != alfabet.end(); ++letter)
+    {
+        // If the letter is already in the map
+        if(corpus.find(string(1, *letter)) != corpus.end())
+        {
+            // Normalize the frequency
+            corpus[string(1, *letter)] /= N;
+        }
+        else{
+            // Else put the key in the map with value zero
+            corpus[string(1, *letter)] = 0;
         }
     }
+
 }
+
+
