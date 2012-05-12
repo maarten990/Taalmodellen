@@ -16,8 +16,9 @@ public:
     LanguageModel(string corpus_path);
     LanguageModel(const char corpus_path[]);
 
-    map<string, int> bigram_counts;
-    map<string, int> unigram_counts;
+private:
+    map<string, int> m_bigram_counts;
+    map<string, int> m_unigram_counts;
 };
 
 #endif
