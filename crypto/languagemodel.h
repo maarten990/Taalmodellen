@@ -3,6 +3,7 @@
 
 #include <string>
 #include <map>
+#include <vector>
 
 using namespace std;
 
@@ -12,9 +13,21 @@ using namespace std;
 class LanguageModel
 {
 public:
+    /* methods */
+
     // overloaded constructors
     LanguageModel(string corpus_path);
     LanguageModel(const char corpus_path[]);
+
+    // returns P(b | a) given the string "ab"
+    double get_probability(string bigram);
+    double get_probability(string a, string b);
+    double get_probability(char a, char b);
+
+    /* fields */
+
+    // static alphabet vector containing each letter of the alphabet
+    static vector<string> alphabet;
 
 private:
     /* methods */
@@ -25,8 +38,8 @@ private:
                            map<string, int> &unigram_counts,
                            map<string, int> &bigram_counts);
     /* fields */
-    map<string, double> m_uni_relcount;
-    map<string, double> m_bi_relcount;
+    map<string, int> m_unicounts;
+    map<string, int> m_bicounts;
 };
 
 #endif
