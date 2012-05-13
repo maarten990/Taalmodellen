@@ -66,4 +66,10 @@ void Relative_frequencies::relative_frequency(int N, map<string, double> &map_co
     }
 }
 
+// Returns the probability of a mapping given two letters
+void Relative_frequencies::compute_lettermapping(string letter_corpus,
+                                                 string letter_cipher)
+{
+    return (1 - abs(corpus[letter_corpus] - cipher[letter_cipher]);
 
+}
