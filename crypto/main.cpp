@@ -42,9 +42,6 @@ void file_to_lowercase(string pathname, bool corpus){
 }
 
 
-void search();
-{
-}
 
 // We make a map that consists of the top 5 mapping
 // belonging to a letter in cipher
@@ -151,6 +148,5 @@ int main(int argc, char *argv[])
         }
     }
 
-    solve(t, l)
 
 }

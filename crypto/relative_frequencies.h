@@ -4,6 +4,7 @@
 #include <string>
 #include <iostream>
 #include <fstream>
+#include <cmath>
 
 using namespace std;
 
@@ -18,6 +19,7 @@ public:
     map<string, double> corpus;
     void letter_count(const char path[], map<string, double> &map_count);
     void relative_frequency(int N, map<string, double> &map_count);
+    double compute_lettermapping(string letter_corpus, string letter_cipher);
 };
 
 #endif // RELATIVE_FREQUENCIES_H
