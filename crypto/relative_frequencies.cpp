@@ -64,7 +64,6 @@ void Relative_frequencies::relative_frequency(int N, map<string, double> &map_co
             map_count[string(1, *letter)] = 0;
         }
     }
-
 }
 
 

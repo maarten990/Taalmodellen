@@ -42,6 +42,10 @@ void file_to_lowercase(string pathname, bool corpus){
 }
 
 
+void search();
+{
+}
+
 // We make a map that consists of the top 5 mapping
 // belonging to a letter in cipher
 map<string, string> calculate_top_5(map<string, double> cipher, map<string, double> corpus)
@@ -119,7 +123,6 @@ map<string, string> calculate_top_5(map<string, double> cipher, map<string, doub
 int main(int argc, char *argv[])
 {
 
-
     if(argc != 3)
     {
         std::cout<<"Correct usage: ./cryptografie corpus-path cipher-path"
@@ -127,33 +130,27 @@ int main(int argc, char *argv[])
 
     }
 
-
     // The two files are first stripped from possible uppercases
     file_to_lowercase(argv[1], true);
     file_to_lowercase(argv[2], false);
 
     // Construct the relative frequencies
-    Relative_frequencies f("corpus.txt" , "cipher.txt");
-    for (auto &pair : f.corpus) {
+    Relative_frequencies t("corpus.txt" , "cipher.txt");
+    for (auto &pair : t.corpus) {
         std::cout << pair.first << ": " << pair.second << std::endl;
     }
-    for (auto &pair : f.cipher) {
+    for (auto &pair : t.cipher) {
         std::cout << pair.first << ": " << pair.second << std::endl;
     }
 
 
-    for (auto &pair : f.corpus) {
-        for (auto &pair2 : f.cipher) {
+    for (auto &pair : t.corpus) {
+        for (auto &pair2 : t.cipher) {
             std::cout<<pair.first<<" "<< pair2.first<< ": "<<
                        1 - abs(pair.second-pair2.second)<<std::endl;
         }
     }
 
-    map<string, string> bla = calculate_top_5(f.cipher, f.corpus);
-
-    for (auto &pair : bla)
-    {
-        std::cout<<pair.first<<" : "<< pair.second<<std::endl;
-    }
+    solve(t, l)
 
 }
