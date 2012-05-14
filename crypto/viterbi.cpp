@@ -3,6 +3,7 @@
 #include <map>
 #include <algorithm>
 #include <sstream>
+#include <iostream>
 
 #include "languagemodel.h"
 #include "relative_frequencies.h"
@@ -39,8 +40,11 @@ string viterbi(string obs, LanguageModel &lang_model,
 
             for (string &y0 : states) {
                 temp_prob = (V[t-1][y0] *
-                             lang_model.get_probability(y, y0) *
+                             lang_model.get_probability(y0, y) *
                              task_model.compute_lettermapping(y0, obs.substr(t, 1)));
+                cout << "V[t-1][y0]: " << V[t-1][y0] << endl;
+                cout << "lang_model.get_probability(y0, y): " << lang_model.get_probability(y0, y) << endl;
+                cout << "task_model.compute_lettermapping(y0, obs.substr(t, 1))" << task_model.compute_lettermapping(y0, obs.substr(t, 1)) << endl << endl;
                 if (temp_prob > max_prob) {
                     max_prob = temp_prob;
                     max_state = y0;
