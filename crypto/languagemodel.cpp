@@ -70,5 +70,5 @@ double LanguageModel::get_probability(string a, string b)
 double LanguageModel::get_probability(string bigram)
 {
     string uni = string(1, bigram.at(0));
-    return m_bicounts[bigram] / m_unicounts[uni];
+    return (m_unicounts[uni] > 0) ? (m_bicounts[bigram] / m_unicounts[uni]) : 0;
 }

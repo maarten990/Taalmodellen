@@ -66,8 +66,8 @@ void Relative_frequencies::relative_frequency(int N, map<string, double> &map_co
     }
 }
 
-double Relative_frequencies::compute_lettermapping(char letter_corpus,
-                                                   char letter_cipher)
+double Relative_frequencies::compute_lettermapping(const char letter_corpus,
+                                                   const char letter_cipher)
 {
     return compute_lettermapping(string(1, letter_corpus),
                                  string(1, letter_cipher));

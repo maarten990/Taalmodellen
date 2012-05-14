@@ -5,9 +5,14 @@
 #include <cmath>
 #include <string>
 #include <iostream>
+#include <fstream>
+#include <streambuf>
+
+using namespace std;
 
 // viterbi declaration
-string viterbi(string observations);
+string viterbi(string observations, LanguageModel &lang_model,
+               Relative_frequencies &task_model);
 
 //write the file to lowercase
 void file_to_lowercase(string pathname, bool corpus){
@@ -127,34 +132,22 @@ int main(int argc, char *argv[])
     {
         std::cout<<"Correct usage: ./cryptografie corpus-path cipher-path"
                 <<std::endl;
-
     }
-
 
     // The two files are first stripped from possible uppercases
     //file_to_lowercase(argv[1], true);
     //file_to_lowercase(argv[2], false);
 
-    /*
-    // Construct the relative frequencies
+    // Construct the task- and languagemodels
     Relative_frequencies t("corpus.txt" , "cipher.txt");
-    for (auto &pair : t.corpus) {
-        std::cout << pair.first << ": " << pair.second << std::endl;
-    }
-    for (auto &pair : t.cipher) {
-        std::cout << pair.first << ": " << pair.second << std::endl;
-    }
+    LanguageModel l("corpus.txt");
 
+    // reading the cipher text
+    ifstream ifstr("cipher.txt");
+    string str((istreambuf_iterator<char>(ifstr)),
+               istreambuf_iterator<char>());
+    ifstr.close();
 
-    for (auto &pair : t.corpus) {
-        for (auto &pair2 : t.cipher) {
-            std::cout<<pair.first<<" "<< pair2.first<< ": "<<
-                       1 - abs(pair.second-pair2.second)<<std::endl;
-        }
-    }
-    */
-
-    std::string s = viterbi("abcd");
-
-    //solve(t, l);
+    std::string s = viterbi(str, l, t);
+    std::cout << "Most likely translation: " << s << std::endl;
 }
