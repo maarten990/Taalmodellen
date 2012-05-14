@@ -6,6 +6,9 @@
 #include <string>
 #include <iostream>
 
+// viterbi declaration
+string viterbi(string observations);
+
 //write the file to lowercase
 void file_to_lowercase(string pathname, bool corpus){
     ifstream file(pathname.c_str());
@@ -40,7 +43,6 @@ void file_to_lowercase(string pathname, bool corpus){
     }
     newfile.close();
 }
-
 
 
 // We make a map that consists of the top 5 mapping
@@ -120,6 +122,7 @@ map<string, string> calculate_top_5(map<string, double> cipher, map<string, doub
 int main(int argc, char *argv[])
 {
 
+
     if(argc != 3)
     {
         std::cout<<"Correct usage: ./cryptografie corpus-path cipher-path"
@@ -127,10 +130,12 @@ int main(int argc, char *argv[])
 
     }
 
-    // The two files are first stripped from possible uppercases
-    file_to_lowercase(argv[1], true);
-    file_to_lowercase(argv[2], false);
 
+    // The two files are first stripped from possible uppercases
+    //file_to_lowercase(argv[1], true);
+    //file_to_lowercase(argv[2], false);
+
+    /*
     // Construct the relative frequencies
     Relative_frequencies t("corpus.txt" , "cipher.txt");
     for (auto &pair : t.corpus) {
@@ -147,6 +152,9 @@ int main(int argc, char *argv[])
                        1 - abs(pair.second-pair2.second)<<std::endl;
         }
     }
+    */
 
+    std::string s = viterbi("abcd");
 
+    //solve(t, l);
 }
