@@ -1,5 +1,8 @@
 #include "relative_frequencies.h"
 
+#include <iostream>
+using namespace std;
+
 Relative_frequencies::Relative_frequencies(string corpus_path, string cipher_path)
 {
     Relative_frequencies(corpus_path.c_str(), cipher_path.c_str());
@@ -75,8 +78,21 @@ double Relative_frequencies::compute_lettermapping(const char letter_corpus,
 
 // Returns the probability of a mapping given two letters
 double Relative_frequencies::compute_lettermapping(string letter_corpus,
-                                                 string letter_cipher)
+                                                   string letter_cipher)
 {
-    return (1 - abs(corpus[letter_corpus] - cipher[letter_cipher]));
+    double dist = distance(letter_corpus, letter_cipher);
+    double total_dist = 0;
+    string alphabet = "abcdefghijklmnopqrstuvwxyz";
 
+    // calculating the sum of the emission frequencies
+    for (char &letter : alphabet) {
+        total_dist += distance(letter_corpus, string(1, letter));
+    }
+
+    return dist / total_dist;
+}
+
+double Relative_frequencies::distance(string letter_corpus, string letter_cipher)
+{
+    return 1 - abs(corpus[letter_corpus] - cipher[letter_cipher]);
 }

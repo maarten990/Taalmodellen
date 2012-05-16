@@ -22,6 +22,8 @@ public:
 
     double compute_lettermapping(const char letter_corpus, const char letter_cipher);
     double compute_lettermapping(string letter_corpus, string letter_cipher);
+private:
+    double distance(string letter_corpus, string letter_cipher);
 };
 
 #endif // RELATIVE_FREQUENCIES_H
