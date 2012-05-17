@@ -1,4 +1,6 @@
 #include "relative_frequencies.h"
+#include <math.h>
+#include <algorithm>
 
 #include <iostream>
 using namespace std;
@@ -12,6 +14,20 @@ Relative_frequencies::Relative_frequencies(const char corpus_path[], const char 
 {
         letter_count(corpus_path, corpus);
         letter_count(cipher_path, cipher);
+
+        // constructing the rankings
+        for (auto &p : corpus)
+            m_corpus_rank.push_back(p.first);
+        for (auto &p : cipher)
+            m_cipher_rank.push_back(p.first);
+
+        // now we sort them based on their frequency in reverse order (high to
+        // low)
+        sort(m_corpus_rank.begin(), m_corpus_rank.end(),
+                [this](string a, string b)->bool { return corpus[a] > corpus[b]; });
+
+        sort(m_cipher_rank.begin(), m_cipher_rank.end(),
+                [this](string a, string b)->bool { return cipher[a] > cipher[b]; });
 }
 
 void Relative_frequencies::letter_count(const char path[], map<string, double> &map_count){
@@ -94,5 +110,5 @@ double Relative_frequencies::compute_lettermapping(string letter_corpus,
 
 double Relative_frequencies::distance(string letter_corpus, string letter_cipher)
 {
-    return 1 - abs(corpus[letter_corpus] - cipher[letter_cipher]);
+    return 1 - pow(corpus[letter_corpus] - cipher[letter_cipher], 2);
 }

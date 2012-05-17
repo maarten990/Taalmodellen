@@ -5,6 +5,7 @@
 #include <iostream>
 #include <fstream>
 #include <cmath>
+#include <vector>
 
 using namespace std;
 
@@ -24,6 +25,8 @@ public:
     double compute_lettermapping(string letter_corpus, string letter_cipher);
 private:
     double distance(string letter_corpus, string letter_cipher);
+    vector<string> m_corpus_rank;
+    vector<string> m_cipher_rank;
 };
 
 #endif // RELATIVE_FREQUENCIES_H
