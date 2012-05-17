@@ -110,5 +110,21 @@ double Relative_frequencies::compute_lettermapping(string letter_corpus,
 
 double Relative_frequencies::distance(string letter_corpus, string letter_cipher)
 {
-    return 1 - pow(corpus[letter_corpus] - cipher[letter_cipher], 2);
+    // first we find the rank of the hidden state's letter
+    int corp_rank;
+    for (int i = 0; i < m_corpus_rank.size(); ++i)
+        if (m_corpus_rank[i] == letter_corpus) {
+            corp_rank = i;
+            break;
+        }
+    
+    // next we find the rank of the emission
+    int cipher_rank;
+    for (int i = 0; i < m_cipher_rank.size(); ++i)
+        if (m_cipher_rank[i] == letter_cipher) {
+            cipher_rank = i;
+            break;
+        }
+
+    return 1 - pow(corp_rank - cipher_rank, 2);
 }
