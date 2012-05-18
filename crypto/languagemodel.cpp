@@ -70,6 +70,6 @@ double LanguageModel::get_probability(string a, string b)
 double LanguageModel::get_probability(string bigram)
 {
     string uni = string(1, bigram.at(0));
-
-    return (m_unicounts[uni] > 0 && m_bicounts[bigram] > 0) ? ((double)m_bicounts[bigram] / (double)m_unicounts[uni]) : 0.001;
+    return ( (double)m_bicounts[bigram] + 1 /
+             alphabet.size() );
 }
