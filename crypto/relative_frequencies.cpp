@@ -39,7 +39,7 @@ void Relative_frequencies::letter_count(const char path[], map<string, double> &
     int total_count_N = 0;
 
     // string with all letters in the alphabet
-    string alphabet = "abcdefghijklmnopqrstuvwxyz";
+    string alphabet = "abcdefghijklmnopqrstuvwxyz ";
 
     // while file is good
     while (file.good()) {
@@ -98,7 +98,7 @@ double Relative_frequencies::compute_lettermapping(string letter_corpus,
 {
     double dist = distance(letter_corpus, letter_cipher);
     double total_dist = 0;
-    string alphabet = "abcdefghijklmnopqrstuvwxyz";
+    string alphabet = "abcdefghijklmnopqrstuvwxyz ";
 
     // calculating the sum of the emission frequencies
     for (char &letter : alphabet) {
