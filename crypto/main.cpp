@@ -135,8 +135,8 @@ int main(int argc, char *argv[])
     }
 
     // The two files are first stripped from possible uppercases
-    //file_to_lowercase(argv[1], true);
-    //file_to_lowercase(argv[2], false);
+    file_to_lowercase(argv[1], true);
+    file_to_lowercase(argv[2], false);
 
     // Construct the task- and languagemodels
     Relative_frequencies t("corpus.txt" , "cipher.txt");
