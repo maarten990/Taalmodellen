@@ -96,14 +96,17 @@ double Relative_frequencies::compute_lettermapping(const char letter_corpus,
 double Relative_frequencies::compute_lettermapping(string letter_corpus,
                                                    string letter_cipher)
 {
-    double dist = distance(letter_corpus, letter_cipher);
+    double dist = 1 - distance(letter_corpus, letter_cipher);
     double total_dist = 0;
     string alphabet = "abcdefghijklmnopqrstuvwxyz ";
 
     // calculating the sum of the emission frequencies
     for (char &letter : alphabet) {
-        total_dist += distance(letter_corpus, string(1, letter));
+        total_dist += 1 - distance(letter_corpus, string(1, letter));
     }
+
+    //cout << "Dist, totaldist: " << dist << ", " << total_dist << endl;
+    //cout << "dist/totaldist: " << dist/total_dist << endl;
 
     return dist / total_dist;
 }
@@ -117,7 +120,7 @@ double Relative_frequencies::distance(string letter_corpus, string letter_cipher
             corp_rank = i;
             break;
         }
-    
+        
     // next we find the rank of the emission
     int cipher_rank;
     for (int i = 0; i < m_cipher_rank.size(); ++i)
@@ -125,6 +128,6 @@ double Relative_frequencies::distance(string letter_corpus, string letter_cipher
             cipher_rank = i;
             break;
         }
-
-    return 1 - pow(corp_rank - cipher_rank, 2);
+        
+    return abs(corp_rank - cipher_rank);
 }
